@@ -2,15 +2,14 @@ from ..client import Client
 from .collection import Collection
 
 class User:
+    __tablename__ = 'Users'
+
     class Query:
         def __init__(self):
             self.client = Client()
         
         def get(self, id: int):
-            self.client.connect()
-            self.client.execute(f"SELECT * FROM Users WHERE DiscordId={id}")
-            row = self.client.cursor.fetchone()
-            self.client.close()
+            row = self.client.exec_fetchone(f"SELECT * FROM Users WHERE DiscordId={id}")
 
             return None if row is None else User(row.DiscordId, row.UserName, row.Discriminator, row.HydroBux, row.Meows) 
 
@@ -26,15 +25,11 @@ class User:
 
             sql += "ORDER BY DiscordId ASC"
             
-            self.client.connect()
-            self.client.execute(sql)
-            rows = self.client.cursor.fetchall()
-            self.client.close()
+            rows = self.client.exec_fetchall(sql)
 
             users = []
             for row in rows:
-                user = ConvertPyodbcToUser(row)
-                users.append(user)
+                users.append(User(row.DiscordId, row.UserName, row.Discriminator, row.HydroBux, row.Meows) )
 
             return Collection(users)
 

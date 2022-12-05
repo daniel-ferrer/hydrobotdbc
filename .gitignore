@@ -4,3 +4,11 @@ __pycache__/
 # Environment files
 .env
 venv/
+
+# macOS file
+.DS_Store
+
+# pypi packaging files
+*.egg-info/
+dist/
+build/

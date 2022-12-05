@@ -1,5 +1,4 @@
-from client import Client
-from converters import ConvertPyodbcToUser
+from ..client import Client
 from .collection import Collection
 
 class User:
@@ -13,7 +12,7 @@ class User:
             row = self.client.cursor.fetchone()
             self.client.close()
 
-            return User(row.DiscordId, row.UserName, row.Discriminator, row.HydroBux, row.Meows) 
+            return None if row is None else User(row.DiscordId, row.UserName, row.Discriminator, row.HydroBux, row.Meows) 
 
         def filter_by(self, discord_id=None, user_name=None, discriminator=None):
             sql = "SELECT * FROM Users "

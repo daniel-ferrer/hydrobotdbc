@@ -67,4 +67,23 @@ class Client:
         value = list(atts.values())[0]
 
         self.exec_commit(f"DELETE FROM {tablename} WHERE {field}={value}")
+    
+    def update(self, obj):
+        tablename = getattr(obj, '__tablename__') if hasattr(obj, '__tablename__') else None
 
+        if tablename is None: 
+            raise Exception("Object missing tablename attribute")
+
+        @staticmethod
+        def sql_format(value):
+            return f"{value}," if str(value).isdigit() else f"'{value}',"
+        
+        atts = vars(obj)
+        field = list(atts.keys())[0]
+        value = list(atts.values())[0]
+
+        row = self.exec_fetchone(f"SELECT * FROM {tablename} WHERE {field}={value}")
+
+        for k, v in atts.items():
+            if getattr(row, k) != v:
+                self.exec_commit(f"UPDATE {tablename} SET {k}={sql_format(v).rstrip(',')} WHERE {field}={value}")

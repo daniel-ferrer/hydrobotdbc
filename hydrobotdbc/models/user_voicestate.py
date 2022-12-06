@@ -13,12 +13,10 @@ class UserVoiceState:
             return None if row is None else UserVoiceState(row.DiscordId, row.DateLastUpdated, row.DateRecAdded)
 
         def filter_by(self, discord_id=None):
-            sql = "SELECT * FROM UserVoiceStates "
+            sql = "SELECT * FROM UserVoiceStates"
 
             if discord_id is not None:
-                sql += f"WHERE DiscordId={discord_id} "
-
-            sql += "ORDER BY DateLastUpdated ASC"
+                sql += f" WHERE DiscordId={discord_id}"
             
             rows = self.client.exec_fetchall(sql)
 

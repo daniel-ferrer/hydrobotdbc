@@ -8,7 +8,7 @@ class UserSession:
             self.client = Client()
         
         def get(self, id: int):
-            row = self.client.exec_fetchone(f"SELECT * FROM UserSession WHERE DiscordId={id}")
+            row = self.client.exec_fetchone(f"SELECT * FROM UserSessions WHERE DiscordId={id}")
 
             return None if row is None else UserSession(row.DiscordId, row.SessionGUID, row.Active, row.ExpirationDate)
 

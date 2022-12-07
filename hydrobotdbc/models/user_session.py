@@ -12,11 +12,13 @@ class UserSession:
 
             return None if row is None else UserSession(row.DiscordId, row.SessionGUID, row.Active, row.ExpirationDate)
 
-        def filter_by(self, discord_id=None):
+        def filter_by(self, discord_id=None, session_guid=None):
             sql = "SELECT * FROM UserSessions "
 
             if discord_id is not None:
-                sql += f"WHERE DiscordId={discord_id} "
+                sql += f"WHERE DiscordId={discord_id}"
+            elif session_guid is not None:
+                sql += f"WHERE SessionGuid='{session_guid}'"
 
             rows = self.client.exec_fetchall(sql)
 

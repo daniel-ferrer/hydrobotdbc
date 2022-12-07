@@ -10,7 +10,7 @@ class UserSession:
         def get(self, id: int):
             row = self.client.exec_fetchone(f"SELECT * FROM UserSessions WHERE DiscordId={id}")
 
-            return None if row is None else UserSession(row.DiscordId, row.SessionGUID, row.Active, row.ExpirationDate)
+            return None if row is None else UserSession(row.DiscordId, row.SessionGuid, row.Active, row.ExpirationDate)
 
         def filter_by(self, discord_id=None, session_guid=None):
             sql = "SELECT * FROM UserSessions "
@@ -24,7 +24,7 @@ class UserSession:
 
             sessions = []
             for row in rows:
-                sessions.append(UserSession(row.DiscordId, row.SessionGUID, row.Active, row.ExpirationDate))
+                sessions.append(UserSession(row.DiscordId, row.SessionGuid, row.Active, row.ExpirationDate))
 
             return Collection(sessions)
 
@@ -32,7 +32,7 @@ class UserSession:
 
     def __init__(self, discord_id, guid, active, expiration_date):
         self.DiscordId = discord_id
-        self.SessionGUID = guid
+        self.SessionGuid = guid
         self.Active = active
         self.ExpirationDate = expiration_date
 

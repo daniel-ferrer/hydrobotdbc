@@ -1,7 +1,8 @@
 from ..client import Client
 from .collection import Collection
+from flask_login import UserMixin
 
-class User:
+class User(UserMixin):
     __tablename__ = 'Users'
 
     class Query:

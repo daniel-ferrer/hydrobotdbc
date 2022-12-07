@@ -42,7 +42,7 @@ class UserSession:
 
     @property
     def guid(self):
-        return self.SessionGUID
+        return self.SessionGuid
     
     @property
     def active(self):

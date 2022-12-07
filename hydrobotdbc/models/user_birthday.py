@@ -32,8 +32,8 @@ class UserBirthday:
 
     def __init__(self, discord_id, month, day, year):
         self.DiscordId = discord_id
-        self.Month = month,
-        self.Day = day,
+        self.Month = month
+        self.Day = day
         self.Year = year
 
     @property

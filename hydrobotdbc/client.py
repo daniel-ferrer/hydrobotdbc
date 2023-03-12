@@ -1,5 +1,9 @@
 import pyodbc
 import dotenv
+from datetime import datetime
+
+from main import app
+logger = app.logger
 
 driver = dotenv.get_key('.env', 'driver')
 server = dotenv.get_key('.env', 'server')
@@ -52,9 +56,15 @@ class Client:
 
         values = ""
         for att in obj.__dict__:
-            values += sql_format(getattr(obj, att))
+            val = getattr(obj, att)
+            if val is not None:
+                values += sql_format(val)
 
-        self.exec_commit(f"INSERT INTO {tablename} VALUES ({values.rstrip(',')})")
+        sql = f"INSERT INTO {tablename} VALUES ({values.rstrip(',')})"
+
+        logger.info(f"{datetime.now()} - add() - Executing SQL line: {sql}")
+
+        self.exec_commit(sql)
 
     def remove(self, obj):
         tablename = getattr(obj, '__tablename__') if hasattr(obj, '__tablename__') else None
@@ -66,7 +76,11 @@ class Client:
         field = list(atts.keys())[0]
         value = list(atts.values())[0]
 
-        self.exec_commit(f"DELETE FROM {tablename} WHERE {field}={value}")
+        sql = f"DELETE FROM {tablename} WHERE {field}={value}"
+        
+        logger.info(f"{datetime.now()} - remove() - Executing SQL line: {sql}")
+
+        self.exec_commit(sql)
     
     def update(self, obj):
         tablename = getattr(obj, '__tablename__') if hasattr(obj, '__tablename__') else None
@@ -86,4 +100,8 @@ class Client:
 
         for k, v in atts.items():
             if getattr(row, k) != v:
-                self.exec_commit(f"UPDATE {tablename} SET {k}={sql_format(v).rstrip(',')} WHERE {field}={value}")
+                sql = f"UPDATE {tablename} SET {k}={sql_format(v).rstrip(',')} WHERE {field}={value}"
+
+                logger.info(f"{datetime.now()} - update() - Executing SQL line: {sql}")
+
+                self.exec_commit(sql)

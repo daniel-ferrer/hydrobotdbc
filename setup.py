@@ -9,7 +9,7 @@ with open('requirements.txt', 'r') as f:
 
 setup(
    name='hydrobotdbc',
-   version='0.0.5',
+   version='0.0.6',
    description='A custom Pyodbc wrapper',
    long_description=long_description,
    long_description_content_type="text/markdown",

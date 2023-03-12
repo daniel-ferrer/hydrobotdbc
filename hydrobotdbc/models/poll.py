@@ -18,7 +18,7 @@ class Poll:
             if discord_id is not None:
                 sql += f"WHERE DiscordId={discord_id}"
 
-            sql += "ORDER BY DateRecAdded DESC"
+            sql += "ORDER BY DateRecAdded ASC"
 
             rows = self.client.exec_fetchall(sql)
 

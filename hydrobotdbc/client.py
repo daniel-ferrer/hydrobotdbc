@@ -2,9 +2,6 @@ import pyodbc
 import dotenv
 from datetime import datetime
 
-from main import app
-logger = app.logger
-
 driver = dotenv.get_key('.env', 'driver')
 server = dotenv.get_key('.env', 'server')
 database = dotenv.get_key('.env', 'database')
@@ -62,7 +59,7 @@ class Client:
 
         sql = f"INSERT INTO {tablename} VALUES ({values.rstrip(',')})"
 
-        logger.info(f"{datetime.now()} - add() - Executing SQL line: {sql}")
+        # logger.info(f"{datetime.now()} - add() - Executing SQL line: {sql}")
 
         self.exec_commit(sql)
 
@@ -78,7 +75,7 @@ class Client:
 
         sql = f"DELETE FROM {tablename} WHERE {field}={value}"
         
-        logger.info(f"{datetime.now()} - remove() - Executing SQL line: {sql}")
+        # logger.info(f"{datetime.now()} - remove() - Executing SQL line: {sql}")
 
         self.exec_commit(sql)
     
@@ -102,6 +99,6 @@ class Client:
             if getattr(row, k) != v:
                 sql = f"UPDATE {tablename} SET {k}={sql_format(v).rstrip(',')} WHERE {field}={value}"
 
-                logger.info(f"{datetime.now()} - update() - Executing SQL line: {sql}")
+                # logger.info(f"{datetime.now()} - update() - Executing SQL line: {sql}")
 
                 self.exec_commit(sql)

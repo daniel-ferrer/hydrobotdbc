@@ -58,11 +58,12 @@ class Client:
             val = getattr(obj, att)
             if val is not None:
                 values += self.sql_format(val)
-                attributes += self.sql_format(val, True)
+                attributes += self.sql_format(att, True)
 
         sql = f"INSERT INTO {tablename} ({attributes.rstrip(',')}) VALUES ({values.rstrip(',')})"
 
         # logger.info(f"{datetime.now()} - add() - Executing SQL line: {sql}")
+        print(sql)
         self.exec_commit(sql)
 
     def remove(self, obj):

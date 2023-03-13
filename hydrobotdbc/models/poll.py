@@ -30,12 +30,12 @@ class Poll:
 
     query = Query()
 
-    def __init__(self, poll_id, discord_id, title, options, date_rec_added):
-        self.PollId = poll_id
+    def __init__(self, discord_id, title, options):
+        self.PollId = None
         self.DiscordId = discord_id
         self.Title = title
         self.Options = options
-        self.DateRecAdded = date_rec_added
+        self.DateRecAdded = None
 
     @property
     def id(self):

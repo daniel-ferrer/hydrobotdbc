@@ -63,7 +63,6 @@ class Client:
         sql = f"INSERT INTO {tablename} ({attributes.rstrip(',')}) VALUES ({values.rstrip(',')})"
 
         # logger.info(f"{datetime.now()} - add() - Executing SQL line: {sql}")
-        print(sql)
         self.exec_commit(sql)
 
     def remove(self, obj):

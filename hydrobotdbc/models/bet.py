@@ -17,12 +17,16 @@ class Bet:
         def filter_by(self, bet_id=None, discord_id=None, game_id=None):
             sql = f"SELECT * FROM BetHistory "
 
+            flag = False
             if bet_id is not None:
                 sql += f"WHERE GameId={bet_id} "
-            elif discord_id is not None:
-                sql += f"WHERE DiscordId='{discord_id}' "
-            elif game_id is not None:
-                sql += f"WHERE DiscordId='{game_id}' "
+                flag = True
+            if discord_id is not None:
+                sql += f"AND DiscordId='{discord_id}' " if flag else f"WHERE DiscordId='{discord_id}' "
+                flag = True
+            if game_id is not None:
+                sql += f"AND GameId='{game_id}' " if flag else f"WHERE GameId='{game_id}' "
+
 
             sql += "ORDER BY DateRecAdded Desc"
 

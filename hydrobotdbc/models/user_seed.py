@@ -12,7 +12,7 @@ class UserSeed:
 
             return None if row is None else UserSeed(row.Seed, row.DiscordId, row.Nonce, row.Displayed)
 
-        def filter_by(self, discord_id=None, displayed=None):
+        def filter_by(self, seed=None, discord_id=None, displayed=None):
             sql = "SELECT * FROM UserSeeds "
 
             allow_multi_clause = False
@@ -21,6 +21,9 @@ class UserSeed:
                 allow_multi_clause = True
             if displayed is not None:
                 sql += f"AND Displayed={displayed}" if allow_multi_clause else f"WHERE Displayed={displayed}"
+                allow_multi_clause = True
+            if seed is not None:
+                sql += f"AND Seed={seed}" if allow_multi_clause else f"WHERE Seed={seed}"
 
             rows = self.client.exec_fetchall(sql)
 

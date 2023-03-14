@@ -1,3 +1,4 @@
+from .bet import Bet
 from .user import User
 from .poll import Poll
 from .wallet import Wallet

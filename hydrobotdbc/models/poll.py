@@ -1,8 +1,10 @@
 from ..client import Client
 from .collection import Collection
 
+
 class Poll:
     __tablename__ = 'PollsQueue'
+
     class Query:
         def __init__(self):
             self.client = Client()
@@ -10,7 +12,7 @@ class Poll:
         def get(self):
             row = self.client.exec_fetchone(f"SELECT * FROM PollsQueue WHERE PollId={id}")
 
-            return None if row is None else Poll(row.PollId, row.DiscordId, row.Title, row.Options, row.DateRecAdded)
+            return None if row is None else Poll(row.DiscordId, row.Title, row.Options, row.PollId, row.DateRecAdded)
 
         def filter_by(self, discord_id=None):
             sql = "SELECT * FROM PollsQueue "
@@ -24,18 +26,18 @@ class Poll:
 
             polls = []
             for row in rows:
-                polls.append(Poll(row.PollId, row.DiscordId, row.Title, row.options, row.DateRecAdded))
+                polls.append(Poll(row.DiscordId, row.Title, row.Options, row.PollId, row.DateRecAdded))
 
             return Collection(polls)
 
     query = Query()
 
-    def __init__(self, discord_id, title, options):
-        self.PollId = None
+    def __init__(self, discord_id, title, options, poll_id=None,  date_rec_added=None):
+        self.PollId = poll_id
         self.DiscordId = discord_id
         self.Title = title
         self.Options = options
-        self.DateRecAdded = None
+        self.DateRecAdded = date_rec_added
 
     @property
     def id(self):

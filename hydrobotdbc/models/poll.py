@@ -12,7 +12,11 @@ class Poll:
         def get(self, poll_id):
             row = self.client.exec_fetchone(f"SELECT * FROM Polls WHERE PollId={poll_id}")
 
-            return None if row is None else Poll(row.DiscordId, row.Title, row.Options, row.PollId, row.DateRecAdded)
+            return None if row is None else Poll(poll_id=row.PollId, discord_id=row.DiscordId, title=row.Title,
+                                                 options=row.Options, winning_options=row.WinningOptions,
+                                                 winner_votes=row.WinnerVotes, total_votes=row.TotalVotes,
+                                                 poll_duration=row.PollDuration, completed=row.Completed,
+                                                 date_rec_added=row.DateRecAdded)
 
         def filter_by(self, discord_id=None, completed=None):
             sql = "SELECT * FROM PollsQueue "
@@ -39,7 +43,8 @@ class Poll:
 
     query = Query()
 
-    def __init__(self, discord_id, title, options, winning_options, winner_votes, total_votes, poll_duration, completed, poll_id=None, date_rec_added=None):
+    def __init__(self, discord_id, title, options, winning_options, winner_votes, total_votes, poll_duration, completed,
+                 poll_id=None, date_rec_added=None):
         self.PollId = poll_id
         self.DiscordId = discord_id
         self.Title = title

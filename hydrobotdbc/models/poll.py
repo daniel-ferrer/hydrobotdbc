@@ -97,5 +97,13 @@ class Poll:
         return self.Completed
 
     @property
+    def poll_start_date(self):
+        return self.PollStartDate
+
+    @property
+    def poll_end_date(self):
+        return self.PollEndDate
+
+    @property
     def date_rec_added(self):
         return self.DateRecAdded

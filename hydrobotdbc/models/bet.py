@@ -34,35 +34,35 @@ class Bet:
 
             bets = []
             for row in rows:
-                bets.append(Bet(row.BetId, row.DiscordId, row.SeedId, row.GameId, row.BetAmount, row.RewardAmount, row.DateRecAdded))
+                bets.append(Bet(bet_id=row.BetId, discord_id=row.DiscordId, seed_id=row.SeedId, game_id=row.GameId, bet_amount=row.BetAmount, reward_amount=row.RewardAmount, date_rec_added=row.DateRecAdded))
 
             return Collection(bets)
 
     query = Query()
 
-    def __init__(self, discord_id, seed_id, game_id, bet_amount, reward_amount):
-        self.BetId = None
+    def __init__(self, discord_id, seed_id, game_id, bet_amount, reward_amount, bet_id=None, date_rec_added=None):
+        self.BetId = bet_id
         self.DiscordId = discord_id
         self.SeedId = seed_id
         self.GameId = game_id
         self.BetAmount = bet_amount
         self.RewardAmount = reward_amount
-        self.DateRecAdded = None
+        self.DateRecAdded = date_rec_added
 
     @property
     def id(self):
         return self.BetId
 
     @property
-    def discordId(self):
+    def discord_id(self):
         return self.DiscordId
 
     @property
-    def seedId(self):
+    def seed_id(self):
         return self.SeedId
 
     @property
-    def gameId(self):
+    def game_id(self):
         return self.GameId
 
     @property

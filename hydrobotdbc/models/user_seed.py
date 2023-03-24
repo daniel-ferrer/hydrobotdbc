@@ -1,16 +1,21 @@
 from ..client import Client
 from .collection import Collection
 
+
 class UserSeed:
     __tablename__ = 'UserSeeds'
+
     class Query:
         def __init__(self):
             self.client = Client()
 
         def get(self, discord_id: int):
-            row = self.client.exec_fetchone(f"SELECT TOP 1 * FROM UserSeeds WHERE DiscordId={discord_id} AND Displayed=0 ORDER BY SeedId DESC")
+            row = self.client.exec_fetchone(
+                f"SELECT TOP 1 * FROM UserSeeds WHERE DiscordId={discord_id} AND Displayed=0 ORDER BY SeedId DESC")
 
-            return None if row is None else UserSeed(row.Seed, row.DiscordId, row.Nonce, row.Displayed)
+            return None if row is None else UserSeed(seed_id=row.SeedId, seed=row.Seed, discord_id=row.DiscordId,
+                                                     nonce=row.Nonce, displayed=row.Displayed,
+                                                     date_rec_added=row.DateRecAdded)
 
         def filter_by(self, seed=None, discord_id=None, displayed=None):
             sql = "SELECT * FROM UserSeeds "
@@ -29,19 +34,20 @@ class UserSeed:
 
             seeds = []
             for row in rows:
-                seeds.append(UserSeed(row.Seed, row.DiscordId, row.Nonce, row.Displayed))
+                seeds.append(UserSeed(seed_id=row.SeedId, seed=row.Seed, discord_id=row.DiscordId, nonce=row.Nonce,
+                                      displayed=row.Displayed, date_rec_added=row.DateRecAdded))
 
             return Collection(seeds)
 
     query = Query()
 
-    def __init__(self, seed, discord_id, nonce, displayed):
-        self.SeedId = None
+    def __init__(self, seed, discord_id, nonce, displayed, seed_id=None, date_rec_added=None):
+        self.SeedId = seed_id
         self.Seed = seed
         self.DiscordId = discord_id
         self.Nonce = nonce
         self.Displayed = displayed
-        self.DateRecAdded = None
+        self.DateRecAdded = date_rec_added
 
     @property
     def id(self):
@@ -52,7 +58,7 @@ class UserSeed:
         return self.Seed
 
     @property
-    def discordId(self):
+    def discord_id(self):
         return self.DiscordId
 
     @property

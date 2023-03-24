@@ -12,7 +12,7 @@ class Game:
         def get(self, id: int):
             row = self.client.exec_fetchone(f"SELECT * FROM Games WHERE GameId={id}")
 
-            return None if row is None else Game(row.GameId, row.Name, row.Description, row.DateRecAdded)
+            return None if row is None else Game(game_id=row.GameId, name=row.Name, description=row.Description, date_rec_added=row.DateRecAdded)
 
         def filter_by(self, game_id=None, name=None):
             sql = "SELECT * FROM Games "
@@ -28,17 +28,17 @@ class Game:
 
             games = []
             for row in rows:
-                games.append(Game(row.GameId, row.Name, row.Description, row.DateRecAdded))
+                games.append(Game(game_id=row.GameId, name=row.Name, description=row.Description, date_rec_added=row.DateRecAdded))
 
             return Collection(games)
 
     query = Query()
 
-    def __init__(self, name, description):
-        self.GameId = None
+    def __init__(self, name, description, game_id=None, date_rec_added=None):
+        self.GameId = game_id
         self.Name = name
         self.Description = description
-        self.DateRecAdded = None
+        self.DateRecAdded = date_rec_added
 
     @property
     def id(self):
@@ -51,7 +51,6 @@ class Game:
     @property
     def description(self):
         return self.Description
-
 
     @property
     def date_rec_added(self):

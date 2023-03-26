@@ -14,17 +14,18 @@ class Poll:
 
             return None if row is None else Poll(poll_id=row.PollId, discord_id=row.DiscordId, title=row.Title,
                                                  options=row.Options, winning_options=row.WinningOptions,
-                                                 winner_votes=row.WinnerVotes, total_votes=row.TotalVotes,
+                                                 winning_votes=row.WinningVotes, total_votes=row.TotalVotes,
                                                  poll_duration=row.PollDuration, completed=row.Completed,
                                                  poll_start_date=row.PollStartDate, poll_end_date=row.PollEndDate,
                                                  date_rec_added=row.DateRecAdded)
 
         def filter_by(self, discord_id=None, completed=None):
-            sql = "SELECT * FROM PollsQueue "
+            sql = "SELECT * FROM Polls "
 
             allow_multi_clause = False
             if discord_id is not None:
-                sql += f"WHERE DiscordId={discord_id}"
+                sql += f"WHERE DiscordId={discord_id} "
+                allow_multi_clause = True
             if completed is not None:
                 sql += f"AND Completed='{completed}' " if allow_multi_clause else f"WHERE Completed='{completed}' "
 
@@ -36,7 +37,7 @@ class Poll:
             for row in rows:
                 polls.append(Poll(poll_id=row.PollId, discord_id=row.DiscordId, title=row.Title,
                                   options=row.Options, winning_options=row.WinningOptions,
-                                  winner_votes=row.WinnerVotes, total_votes=row.TotalVotes,
+                                  winning_votes=row.WinningVotes, total_votes=row.TotalVotes,
                                   poll_duration=row.PollDuration, completed=row.Completed,
                                   poll_start_date=row.PollStartDate, poll_end_date=row.PollEndDate,
                                   date_rec_added=row.DateRecAdded))
@@ -45,7 +46,7 @@ class Poll:
 
     query = Query()
 
-    def __init__(self, discord_id, title, options, poll_duration, completed=False, winning_options=None, winner_votes=None, total_votes=None,
+    def __init__(self, discord_id, title, options, poll_duration, completed=False, winning_options=None, winning_votes=0, total_votes=0,
                  poll_start_date=None, poll_end_date=None, poll_id=None, date_rec_added=None):
         self.PollId = poll_id
         self.DiscordId = discord_id
@@ -54,7 +55,7 @@ class Poll:
         self.PollDuration = poll_duration
         self.Completed = completed
         self.WinningOptions = winning_options
-        self.WinnerVotes = winner_votes
+        self.WinningVotes = winning_votes
         self.TotalVotes = total_votes
         self.PollStartDate = poll_start_date
         self.PollEndDate = poll_end_date
@@ -81,9 +82,8 @@ class Poll:
         return self.WinningOptions
 
     @property
-    def winner_votes(self):
-        return self.WinnerVotes
-
+    def winning_votes(self):
+        return self.WinningVotes
     @property
     def total_votes(self):
         return self.TotalVotes

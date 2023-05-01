@@ -1,5 +1,5 @@
-from ..client import Client
 from .collection import Collection
+from ..client import Client
 
 
 class UserSeed:
@@ -16,6 +16,17 @@ class UserSeed:
             return None if row is None else UserSeed(seed_id=row.SeedId, seed=row.Seed, discord_id=row.DiscordId,
                                                      nonce=row.Nonce, displayed=row.Displayed,
                                                      date_rec_added=row.DateRecAdded)
+
+        def get_prev(self, discord_id: int):
+            rows = self.client.exec_fetchall(
+                f"SELECT * FROM UserSeeds WHERE DiscordId={discord_id} AND Displayed=1 ORDER BY SeedId DESC")
+
+            seeds = []
+            for row in rows:
+                seeds.append(UserSeed(seed_id=row.SeedId, seed=row.Seed, discord_id=row.DiscordId, nonce=row.Nonce,
+                                      displayed=row.Displayed, date_rec_added=row.DateRecAdded))
+
+            return Collection(seeds)
 
         def filter_by(self, seed=None, discord_id=None, displayed=None):
             sql = "SELECT * FROM UserSeeds "

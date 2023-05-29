@@ -40,7 +40,7 @@ class Bet:
 
     query = Query()
 
-    def __init__(self, discord_id, seed_id, game_id, bet_amount, reward_amount, bet_id=None, date_rec_added=None):
+    def __init__(self, discord_id, game_id, bet_amount, reward_amount=None, seed_id=None, bet_id=None, date_rec_added=None):
         self.BetId = bet_id
         self.DiscordId = discord_id
         self.SeedId = seed_id
